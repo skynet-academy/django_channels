@@ -1,0 +1,95 @@
+{% load static %}
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'account:home' %}">Home</a>
+        <button 
+            class="navbar-toggler" 
+            type="button" 
+            data-bs-toggle="collapse" 
+            data-bs-target="#navbarNav" 
+            aria-controls="navbarNav" 
+            aria-expanded="false" 
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled">Disabled</a>
+                </li>
+            </ul>
+        </div>
+        <form class="d-flex" onsubmit="return executeQuery();">
+            <input class="form-control me-2" type="text" id="id_q" placeholder="Search">
+        </form>
+        {% if request.user.is_authenticated %}
+        <div class="dropdown dropleft show p-2">
+            <div class="d-flex flex-row">
+                <div class="btn-group dropleft">
+                    <div 
+                        class="d-flex notifications-icon-container rounded-circle align-items-center mr-3" 
+                        id="id_chat_notifications_dropdown_toggle"
+                        data-toggle="dropdown">
+                        <span id="id_chat_notificatons_count" class="notify-badge"></span>
+                        <span class="d-flex material-icons notifications-material-icon m-auto">chat</span>
+                        <div 
+                            class="dropdown-menu scrollable-menu" 
+                            aria-labelledby="id_chat_notifications_dropdown_toggle" 
+                            id="id_chat_notifications_container">
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group dropleft">
+                    <div 
+                        class="d-flex notifications-icon-container rounded-circle align-items-center mr-3" 
+                        id="id_notifications_dropdown_toggle"
+                        data-toggle="dropdown">
+                        <span id="id_general_notificatons_count" class="notify-badge"></span>
+                        <span class="d-flex material-icons notifications-material-icon m-auto">notifications</span>
+                        <div 
+                            class="dropdown-menu scrollable-menu" 
+                            aria-labelledby="id_general_notifications_dropdown_toggle" 
+                            id="id_chat_notifications_container">
+                        </div>
+                    </div>
+                </div>
+                <div class="btn-group dropleft">
+                    <img class="account-image rounded-circle m-auto d-block dropdown-toggle" 
+                         
+                         src="{{request.user.profile_image.url}}"
+                         id="id_profile_links"
+                         data-bs-toggle="dropdown"
+                         aria-haspopup="true"
+                         aria-expanded="false"
+                         alt="skynet118-logo" 
+                         width="40"
+                         height="40">
+                    <div class="dropdown-menu" aria-labelledby="id_profile_links" />
+                        <a class="dropdown-item" href="{% url 'account:view' user_id=request.user.id %}">Account</a>
+                        <a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+            <a class="btn btn-primary" href="{% url 'account:login' %}">Login</a>
+            <a class="btn btn-primary" href="{% url 'account:register' %}">Register</a>
+        {% endif %}
+    </div>
+</nav>
+<script type="text/javascript">
+    function executeQuery(){
+        let  query = document.getElementById("id_q").value
+        window.location.replace("{% url 'account:search-view' %}?q=" + query)
+        return false;
+    }
+</script>
